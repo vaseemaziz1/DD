@@ -1,0 +1,289 @@
+root@client ~ # history
+    1  kubectl get pv
+    2  kubectl get pv -A
+    3  kubectl get pvc
+    4  kubectl get pv -A
+    5  kubectl edit pvc
+    6  kubectl describe  pvc
+    7  kubectl describe  pv
+    8  kubectl edit  pvc
+    9  kubectl edit  pv
+   10  kubectl edit  pvc
+   11  kubectl edit  pv
+   12  kubectl edit  pvc
+   13  kubectl edit  pv
+   14  kubectl edit  pvc
+   15  kubectl edit  pv
+   16  kubectl edit  pvc
+   17  kubectl edit  pv
+   18  kubectl edit  pvc
+   19  kubectl describe pvc
+   20  kubectl describe pv
+   21  kubectl get pv 
+   22  kubectl get pvc
+   23  kubectl edit pv-trouble-claim
+   24  kubectl edit pvc pv-trouble-claim
+   25  kubectl edit pv-trouble-claim
+   26  kubectl edit pvc pv-trouble-claim
+   27  vi pvc.yaml
+   28  kubectl get pvc
+   29  kubectl delete pv-trouble-claim
+   30  kubectl delete pvc pv-trouble-claim
+   31  vi pvc.yaml
+   32  kubectl create -f pvc.yaml 
+   33  kubectl get pvc
+   34  kubectl get pv
+   35  kubectl get pv vmohammed-data-pv
+   36  cp pvc.yaml pvc1.yaml
+   37  vi pvc1.yaml 
+   38  kubectl create -f pvc1.yaml 
+   39  kubectl get pv vmohammed-data-pv
+   40  kubectl get pvc
+   41  ls
+   42  vi mysql-app.yaml 
+   43  history
+root@client ~ # 
+root@client ~ # cat *.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql-db
+  name: mysql-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - image: mysql:8.0.18
+        name: mysql
+        env:
+        - name: MYSQL_RANDOM_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+        - name: MYSQL_USER
+        - name: MYSQL_PASSWORD
+        ports:
+        - ... 3306
+        volumeMounts:
+        - ... /var/lib/mysql
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+            claimName: mysql-data-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-claim
+spec:
+  ...
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vmohammed-data-pv-claim
+  namespace: default
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi
+  volumeMode: Filesystem
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-trouble-claim
+  namespace: default
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi
+  volumeMode: Filesystem
+root@client ~ # 
+
+
+
+root@client ~ # cat *
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: testing-pvc-sc
+  name: testing-pvc-sc
+spec:
+  containers:
+  - image: busybox
+    name: testing-pvc-sc
+    volumeMounts:
+    - name: mysql-persistent-storage
+      mountPath: /data
+    command: ["sh" , "-c", "sleep infinity"]
+  restartPolicy: Always
+  volumes:
+  - name: mysql-persistent-storage
+    persistentVolumeClaim:
+      claimName: pvc-with-sc
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-db
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql-db
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - image: mysql:8.0.18
+        name: mysql-db
+        env:
+          # Use secret in real usage
+        - name: MYSQL_RANDOM_ROOT_PASSWORD
+          value: "true"
+        - name: MYSQL_DATABASE
+          value: "production"
+        - name: MYSQL_USER
+          value: "vmohammed"
+        - name: MYSQL_PASSWORD
+          value: "pAssw0rd"
+        ports:
+        - containerPort: 3306
+          name: mysql-db
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-data-claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-claim
+spec:
+  storageClassName:
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 100Mi
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql-db
+  name: mysql-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - image: mysql:8.0.18
+        name: mysql
+        env:
+        - name: MYSQL_RANDOM_ROOT_PASSWORD
+        - name: MYSQL_DATABASE
+        - name: MYSQL_USER
+        - name: MYSQL_PASSWORD
+        ports:
+        - ... 3306
+        volumeMounts:
+        - ... /var/lib/mysql
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+            claimName: mysql-data-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-claim
+spec:
+  ...
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vmohammed-data-pv-claim
+  namespace: default
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi
+  volumeMode: Filesystem
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-with-sc
+spec:
+  storageClassName: playpit-labs-storage
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 2Gi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-with-default-sc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 2Gi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-trouble-claim
+  namespace: default
+spec:
+  accessModes:
+  - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Mi
+  volumeMode: Filesystem
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: vmohammed-storage-class
+provisioner: rancher.io/local-path
+root@client ~ # 

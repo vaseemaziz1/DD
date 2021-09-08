@@ -1,0 +1,173 @@
+kubectl expose deployment aqua-svc —name=aqua --port=80 
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: aqua
+  name: aqua-svc
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: aqua
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: maroon
+  name: maroon-svc
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: maroon
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: olive
+  name: olive-svc
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: olive
+status:
+  loadBalancer: {}
+
+
+kubectl create ingress aqua-ingress --rule="aqua.k8slab.playpit.net/=aqua-svc:80"
+
+kubectl create ingress maroon-ingress --rule="maroon.k8slab.playpit.net/=maroon-svc:80"
+
+kubectl create ingress olive-ingress --rule="olive.k8slab.playpit.net/=olive-svc:80"
+
+
+kubectl config set-context --current --namespace=<insert-namespace-name-here>
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+root@client ~ # kubectl run  test --image=nginx --env="COLOR=red" --dry-run=client -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: test
+  name: test
+spec:
+  containers:
+  - env:
+    - name: COLOR
+      value: red
+    image: nginx
+    name: test
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+root@client ~ # kubectl create deployment red-color --image=sbeliakou/color --replicas=3 --dry-run=client -o yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: red-color
+  name: red-color
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: red-color
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: red-color
+    spec:
+      containers:
+      - image: sbeliakou/color
+        name: color
+        resources: {}
+status: {}
+
+
+
+=============================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: red-color
+  name: red-color
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: red-color
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: red-color
+    spec:
+      containers:
+      - image: sbeliakou/color
+        name: color
+        env:
+          - name: COLOR
+	    value: red
+        resources: {}
+status: {}
+
+
+
+=========================================
+
+kubectl expose deployment red-color --port=8080 --target-port=80 --name=red-svc  --type=ClusterIP
+kubectl expose deployment green-color --port=8080 --target-port=80 --name=green-svc --type=ClusterIP
+kubectl expose deployment yellow-color --port=8080 --target-port=80 --name=yellow-svc --type=ClusterIP
+
+
+
+ kubectl create ingress lights-ingress --class=default \
+  --rule="lights.k8slab.playpit.net/=switch:80" \
+  --rule="lights.k8slab.playpit.net/red=red-svc:80" \
+  --rule="lights.k8slab.playpit.net/green=green-svc:80" \
+  --rule="lights.k8slab.playpit.net/yellow=yellow-svc:80"
+
+
+
+kubectl create ingress trouble-1-ingress --namespace=trouble-1 --class=default \
+  --rule="trouble-1.k8slab.playpit.net/lime=lime-svc:80" \
+  --rule="trouble-1.k8slab.playpit.net/purple=purple-svc:80" 
+  
+  trouble-1.k8slab.playpit.net  
+                                /lime     lime-svc:80 (<error: endpoints "lime-svc" not found>)
+                                /purple   purple-svc:80 (<error: endpoints "purple-svc" not found>)
+                                
+                            
+kubectl create ingress nginx-ingress-controller --class=default --namespace=ingress-default-backend  \
+  --rule="null.lab.playpit.net/=sorry-page-service:880" \
+  
+  
+  root@client ~ # kubectl create ingress nginx-ingress-controller --class=default --namespace=ingress-default-backend  --annotation nginx.ingress.kubernetes.io/default-backend="sorry-page-service:80"  --rule="null.lab.playpit.net/=sorry-page-service:80" --default-backend="sorry-page-service:80"

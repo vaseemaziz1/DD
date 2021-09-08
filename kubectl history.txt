@@ -1,0 +1,121 @@
+    1  vi t1.yaml
+    2  kubectl create -f t1.yaml 
+    3  kubectl get all
+    4  vi svc.yaml
+    5  kubectl create -f svc.yaml 
+    6  kubectl get all
+    7  kubectl get all ep
+    8  kubectl get ep
+    9  kubectl get all 
+   10  kubectl describe pod/web-tricky-pod-emptydir 
+   11* 
+   12  vi svc.yaml 
+   13  vi t1.yaml 
+   14  vi svc.yaml 
+   15  kubectl get all 
+   16  kubectl delete service/web-tricky-pod-emptydir-svc
+   17  kubectl create -f svc.yaml 
+   18  kubectl get ep
+   19  kubectl get all 
+   20  kubectl delete pod/web-tricky-pod-emptydir 
+   21  vi t1.yaml 
+   22  kubectl create -f t1.yaml 
+   23  kubectl get ep
+   24  kubectl describe pod/web-tricky-pod-emptydir
+   25  kubectl get ep
+   26  kubectl delete service web-tricky-pod-emptydir-svc
+   27  vi svc.yaml 
+   28  kubectl create -f svc.yaml 
+   29  kubectl get ep
+   30  curl 10.42.2.5:80
+   31  hostname
+   32  kubectl get all -o wide
+   33  curl 10.43.225.139:32747
+   34  curl 10.42.2.5:32747
+   35  curl node01:32747
+   36  curl node01:32747/index.html
+   37  curl node01:32747
+   38  kubectl exec -it web-tricky-pod-emptydir bash
+   39  kubectl exec -it web-tricky-pod-emptydir sh -c
+   40  kubectl exec -it web-tricky-pod-emptydir sh
+   41  curl node01:32747
+   42  vi t1.yaml 
+   43  kubectl delete pod web-tricky-pod-emptydir
+   44  kubectl create -f t1.yaml 
+   45  kubectl exec -it web-tricky-pod-emptydir sh
+   46  kubectl get all -o wide
+   47  kubectl delete pod web-tricky-pod-emptydir
+   48  vi t1.yaml 
+   49  kubectl create -f t1.yaml 
+   50  kubectl get all -o wide
+   51  kubectl delete pod web-tricky-pod-emptydir
+   52  vi t1.yaml 
+   53  kubectl create -f t1.yaml 
+   54  kubectl get all -o wide
+   55  kubectl delete pod web-tricky-pod-emptydir
+   56  vi t1.yaml 
+   57  kubectl create -f t1.yaml 
+   58  kubectl get all -o wide
+   59  kubectl exec -it web-tricky-pod-emptydir sh
+   60  kubectl get all -o wide
+   61  curl node01:32747
+   62  vi t1.yaml 
+   63  kubectl delete pod web-tricky-pod-emptydir
+   64  kubectl create -f t1.yaml 
+   65  kubectl get all -o wide
+   66  curl node01:32747
+   67  kubectl delete pod web-tricky-pod-emptydir
+   68  vi t1.yaml 
+   69  kubectl create -f t1.yaml 
+   70  kubectl get all -o wide
+   71  curl node01:32747
+   72  vi svc.yaml 
+   73  kubectl get svc
+   74  kubectl delete web-tricky-pod-emptydir-svc
+   75  kubectl delete svc web-tricky-pod-emptydir-svc
+   76  kubectl create -f svc.yaml 
+   77  kubectl get svc
+   78  curl node01:30081
+   79  cp t1.yaml t2.yaml
+   80  vi t2.yaml 
+   81  vi svc.yaml 
+   82  cp svc.yaml svc2.yaml
+   83  vi svc2.yaml 
+   84  kubectl get all
+   85  kubectl create -f t2.yaml 
+   86  kubectl get all
+   87  kubectl create -f svc2.yaml 
+   88  kubectl get all
+   89  kubectl get ep
+   90  curl node01:30082
+   91  cp t2.yaml t3.yaml
+   92  vi t3.yaml 
+   93  kubectl get all
+   94  kubectl delete pod/web-deployment-hostpath
+   95  kubectl create -f t3.yaml 
+   96  kubectl get all
+   97  kubectl get ep
+   98  curl node01:30082
+   99  kubectl get all
+  100  kubectl delete service/web-deployment-hostpath-svc 
+  101  vi svc2.yaml 
+  102  kubectl create -f svc2.yaml 
+  103  kubectl get all
+  104  curl node01:30083
+  105  cp t1.yaml tx.yaml
+  106  vi tx.yaml 
+  107  ll
+  108  cp svc.yaml svcx.yaml
+  109  vi svcx.yaml 
+  110  kubectl create -f tx.yaml 
+  111  kubectl get all
+  112  vi tx.yaml 
+  113  kubectl create -f tx.yaml 
+  114  kubectl delete pod web-pod-emptydir-tmpfs
+  115  kubectl create -f tx.yaml 
+  116  kubectl get all
+  117  kubectl create -f svcx.yaml 
+  118  kubectl get all
+  119  kubectl get ep
+  120  curl node01:30082
+  

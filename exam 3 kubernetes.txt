@@ -1,0 +1,164 @@
+1. Create Ingress for “Bookshelf” application
+Ingress Name: bookshelf-ingress
+Hostname: bookshelf.stage.k8slab.playpit.net
+Rule:
+/ forwards to bookshelf-svc
+
+
+
+
+kubectl create namespace staging
+
+kubectl create deployment bookshelf --image=    --replicas=3 -n staging --dry-run=client -o yaml
+
+kubectl expose deployment booshelf --name=bookshelf-svc --type=NodePort --port=3090 -n staging --dry-run=client -o yaml
+
+kubectl create ingress bookshelf-ingress --class=default \
+  --rule="bookshelf.stage.k8slab.playpit.net/=bookshelf-svc:80" \
+
+
+root@client ~ # cat *.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: bookshelf
+  name: bookshelf
+  namespace: staging
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: bookshelf
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: bookshelf
+    spec:
+      containers:
+      - image: sbeliakou/bookshelf
+        name: bookshelf
+        resources: {}
+status: {}
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: bookshelf
+  name: bookshelf-svc
+  namespace: staging
+spec:
+  ports:
+  - port: 8090
+    protocol: TCP
+    targetPort: 8090
+    nodePort: 31122
+  selector:
+    app: bookshelf
+  type: NodePort
+status:
+  loadBalancer: {}
+root@client ~ # 
+
+
+root@client ~ # history
+    1  kubectl create namespace staging
+    2  kubectl create deployment bookshelf --image=    --replicas=3 -n staging --dry-run=client -o yaml
+    3  kubectl expose deployment booshelf --name=bookshelf-svc --type=NodePort --port=3090 -n staging --dry-run=client -o yaml
+    4  kubectl expose deployment bookshelf --name=bookshelf-svc --type=NodePort --port=3090 -n staging --dry-run=client -o yaml
+    5  kubectl create deployment bookshelf --image=sbeliakou/bookshelf    --replicas=5 -n staging --dry-run=client -o yaml
+    6  kubectl create deployment bookshelf --image=sbeliakou/bookshelf    --replicas=5 -n staging --dry-run=client -o yaml >t1.yaml
+    7  kubectl create -f t1.yaml 
+    8  kubectl expose deployment bookshelf --name=bookshelf-svc --type=NodePort --port=3090 -n staging --dry-run=client -o yaml
+    9  kubectl expose deployment bookshelf --name=bookshelf-svc --type=NodePort --port=8090 -n staging --dry-run=client -o yaml
+   10  kubectl expose deployment bookshelf --name=bookshelf-svc --type=NodePort --port=8090 -n staging --dry-run=client -o yaml > t2.yaml
+   11  vi t2.yaml 
+   12  kubectl create -f t2.yaml 
+   13  kubectl get pods -n staging   -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,IP:.status.podIP 
+   14  kubectl get svc -n staging 
+   15  kubectl get ep -n staging bookshelf-svc -o jsonpath='{.subsets[].addresses[*].ip}'
+   16  kubectl create ingress bookshelf-ingress --class=default   --rule="bookshelf.stage.k8slab.playpit.net/=bookshelf-svc:80" \
+   17  kubectl create ingress bookshelf-ingress --class=default >   --rule="bookshelf.stage.k8slab.playpit.net/=bookshelf-svc:8090"
+   18  kubectl create ingress bookshelf-ingress --class=default  --rule="bookshelf.stage.k8slab.playpit.net/=bookshelf-svc:8090"
+   19  kubectl describe ingress ingress-resource-backend
+   20  kubectl describe ingress bookshelf-ingress
+   21  kubectl delete ingress bookshelf-ingress
+   22  kubectl create ingress bookshelf-ingress --class=default  --rule="bookshelf.stage.k8slab.playpit.net/=bookshelf-svc:8090"  -n staging
+   23  kubectl delete ingress bookshelf-ingress -n staging
+   24  kubectl create ingress bookshelf-ingress --class=default  --rule="bookshelf.stage.k8slab.playpit.net/=bookshelf-svc:8090"  -n staging
+   25  kubectl describe ingress bookshelf-ingress -n staging
+   26  kubectl get all -n palitra
+   27  kubectl edit service purple-svc -n palitra
+   28  kubectl edit service maroon-svc -n palitra
+   29  kubectl get all -n palitra
+   30  kubectl get ing -n palitra
+   31  curl http://palitra.k8slab.playpit.net/
+   32  curl http://palitra.k8slab.playpit.net/purple
+   33  curl http://palitra.k8slab.playpit.net/maroon
+   34  kubectl edit deployment.apps/purple -n palitra
+   35  kubectl edit deployment.apps/maroon -n palitra
+   36  kubectl get all -n palitra
+   37  curl http://palitra.k8slab.playpit.net/purple
+   38  curl http://palitra.k8slab.playpit.net/maroon
+   39  kubectl get all -n staging
+   40  kubectl get pods -n staging   -o custom-columns=NAME:.metadata.name,STATUS:.status.phase,IP:.status.podIP 
+   41  kubectl get svc -n staging 
+   42  kubectl get ep -n staging bookshelf-svc -o jsonpath='{.subsets[].addresses[*].ip}'
+   43  cat *.yaml
+   44  history
+   
+   
+   
+   
+   
+   
+   root@client ~ # cat t1.yaml 
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     creationTimestamp: null
+     labels:
+       app: bookshelf
+     name: bookshelf
+     namespace: staging
+   spec:
+     replicas: 5
+     selector:
+       matchLabels:
+         app: bookshelf
+     strategy: {}
+     template:
+       metadata:
+         creationTimestamp: null
+         labels:
+           app: bookshelf
+       spec:
+         containers:
+         - image: sbeliakou/bookshelf
+           name: bookshelf
+           resources: {}
+   status: {}
+   root@client ~ # cat t2.yaml 
+   apiVersion: v1
+   kind: Service
+   metadata:
+     creationTimestamp: null
+     labels:
+       app: bookshelf
+     name: bookshelf-svc
+     namespace: staging
+   spec:
+     ports:
+     - port: 8090
+       protocol: TCP
+       targetPort: 8090
+       nodePort: 31122
+     selector:
+       app: bookshelf
+     type: NodePort
+   status:
+  loadBalancer: {}

@@ -1,0 +1,429 @@
+1. 
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 2Gi
+
+
+
+2. Creating Secrets for MySQL DB
+Now, please create a secret for our db (will be creeated later).
+
+Requirements:
+Secret Name: mysql-secret
+Secrets Data:
+MYSQL_RANDOM_ROOT_PASSWORD: yes
+MYSQL_DATABASE: production
+MYSQL_USER: vmohammed
+MYSQL_PASSWORD: pAssw0rd
+
+kubectl create secret generic mysql-secret --type=Opaque --from-literal=MYSQL_RANDOM_ROOT_PASSWORD=yes --from-literal=MYSQL_DATABASE=production --from-literal=MYSQL_USER=vmohammed  --from-literal=MYSQL_PASSWORD=pAssw0rd --dry-run=true -o yaml
+
+
+3. Deploying MySQL DB
+Ok. Now please deploy MySQL DB according to the following requirements:
+
+Requirements:
+Deployment Name: mysql-db
+Replicas: 1
+Container Image: mysql:8.0.18
+Storage:
+persistentVolumeClaim: mysql-data-claim
+mountPath: /var/lib/mysql
+Environment Variables:
+envFrom:
+secretRef: mysql-secret
+Wait until MySQL DB starts. Inspect its Pod Logs
+
+
+root@client ~ # cat mysqldb.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql-db
+  name: mysql-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - image: mysql:8.0.18
+        name: mysql-db
+        envFrom:
+        - secretRef:
+            name: mysql-secret
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+            claimName: mysql-data-claim
+
+4. MySQL DB Service
+Now please create db related Service:
+
+Requirements:
+Service Name: db
+Service Type: ClusterIP
+Port: 3306
+Overview:
+
+
+root@client ~ # kubectl create service clusterip db --tcp=3306 --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mysql-db
+  name: db
+spec:
+  ports:
+  - name: "3306"
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql-db
+  type: ClusterIP
+status:
+  loadBalancer: {}
+root@client ~ # 
+
+5. Creating Configuration Map
+Our web application requires several configuration items. Please create configMap for it.
+
+Requirements:
+Name: check-db-configmap
+Data:
+PORT: 80
+STUDENT: Vaseemaziz Mohammed
+Overview:
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-db-configmap
+data:
+     PORT: 80
+     STUDENT: Vaseemaziz Mohammed
+
+
+
+6. Deploying DB Check Application
+Please deploy ‘db-check’ application as required below:
+
+Requirements:
+Deployment Name: check-db
+Replicas: 1
+Container Image: sbeliakou/mysql-check
+Container Port: 80
+Environment from ConfigMap (envFrom): check-db-configmap
+Overview:
+
+7. Exposing DB Check Application
+Now let’s create check-db-service for check-db application.
+
+Requirements:
+Name: check-db-service
+Type: NodePort
+NodePort: 30080
+Pass db connectivity test in browser UI. Fill all required fields
+
+
+root@client ~ # cat task7.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: check-db
+  name: check-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    nodePort: 30080
+  selector:
+    app: check-db
+  type: NodePort
+  
+
+
+8. Exposing Web Service using Ingress
+Please create check-db-ingress Ingress for handling check-db-service outside the cluster by check-db.student.playpit.net domain name
+
+Overview:
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 2Gi
+apiVersion: v1
+data:
+  MYSQL_DATABASE: cHJvZHVjdGlvbg==
+  MYSQL_PASSWORD: cEFzc3cwcmQ=
+  MYSQL_RANDOM_ROOT_PASSWORD: eWVz
+  MYSQL_USER: dm1vaGFtbWVk
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mysql-secret
+type: Opaque
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql-db
+  name: mysql-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - image: mysql:8.0.18
+        name: mysql
+        envFrom:
+        - secretRef:
+            name: mysql-secret
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+            claimName: mysql-data-claim
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: db
+spec:
+  ports:
+  - name: "3306"
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql-db
+  type: ClusterIP
+status:
+  loadBalancer: {}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: check-db-configmap
+data:
+     PORT: "80"
+     STUDENT: "Vaseemaziz Mohammed"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: check-db
+  name: check-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: check-db
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: check-db
+    spec:
+      containers:
+      - image: sbeliakou/mysql-check
+        name: mysql-check
+        envFrom:
+        - configMapRef:
+            name: check-db-configmap
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: check-db
+  name: check-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    nodePort: 30080
+  selector:
+    app: check-db
+  type: NodePort
+  
+  
+  
+  
+  
+  
+  
+  
+  root@client ~ # kubectl get all -o wide
+  NAME                            READY   STATUS    RESTARTS   AGE   IP          NODE     NOMINATED NODE   READINESS GATES
+  pod/mysql-db-6dbfd9dc7d-k9flk   1/1     Running   0          51m   10.42.2.3   node01   <none>           <none>
+  pod/check-db-576b986955-xvw99   1/1     Running   0          37m   10.42.0.3   master   <none>           <none>
+  
+  NAME                       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE     SELECTOR
+  service/kubernetes         ClusterIP   10.43.0.1       <none>        443/TCP        63m     <none>
+  service/check-db-service   NodePort    10.43.60.87     <none>        80:30080/TCP   27m     app=check-db
+  service/db                 ClusterIP   10.43.208.164   <none>        3306/TCP       4m12s   app=mysql-db
+  
+  NAME                       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS    IMAGES                  SELECTOR
+  deployment.apps/mysql-db   1/1     1            1           51m   mysql         mysql:8.0.18            app=mysql-db
+  deployment.apps/check-db   1/1     1            1           37m   mysql-check   sbeliakou/mysql-check   app=check-db
+  
+  NAME                                  DESIRED   CURRENT   READY   AGE   CONTAINERS    IMAGES                  SELECTOR
+  replicaset.apps/mysql-db-6dbfd9dc7d   1         1         1       51m   mysql         mysql:8.0.18            app=mysql-db,pod-template-hash=6dbfd9dc7d
+  replicaset.apps/check-db-576b986955   1         1         1       37m   mysql-check   sbeliakou/mysql-check   app=check-db,pod-template-hash=576b986955
+root@client ~ # 
+
+
+
+oot@client ~ # kubectl describe pod mysql-db-6dbfd9dc7d-k9flk
+Name:         mysql-db-6dbfd9dc7d-k9flk
+Namespace:    default
+Priority:     0
+Node:         node01/172.31.0.3
+Start Time:   Mon, 06 Sep 2021 00:35:00 +0000
+Labels:       app=mysql-db
+              pod-template-hash=6dbfd9dc7d
+Annotations:  <none>
+Status:       Running
+IP:           10.42.2.3
+IPs:
+  IP:           10.42.2.3
+Controlled By:  ReplicaSet/mysql-db-6dbfd9dc7d
+Containers:
+  mysql:
+    Container ID:   containerd://7651353e588570c87dd4cac65201a56a3277610dd4fb408275dcfd101f8e109f
+    Image:          mysql:8.0.18
+    Image ID:       sha256:ed1ffcb5eff39aed723a66ee895854a6417485f85629de7ba87610beb6bf39ed
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Mon, 06 Sep 2021 00:35:01 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment Variables from:
+      mysql-secret  Secret  Optional: false
+    Environment:    <none>
+    Mounts:
+      /var/lib/mysql from mysql-persistent-storage (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-7drr5 (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  mysql-persistent-storage:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  mysql-data-claim
+    ReadOnly:   false
+  kube-api-access-7drr5:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  44m   default-scheduler  Successfully assigned default/mysql-db-6dbfd9dc7d-k9flk to node01
+  Normal  Pulled     44m   kubelet            Container image "mysql:8.0.18" already present on machine
+  Normal  Created    44m   kubelet            Created container mysql
+  Normal  Started    44m   kubelet            Started container mysql
+root@client ~ # 
+
+
+
+
+root@client ~ # kubectl describe service db
+Name:              db
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=mysql-db
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                10.43.208.164
+IPs:               10.43.208.164
+Port:              3306  3306/TCP
+TargetPort:        3306/TCP
+Endpoints:         10.42.2.3:3306
+Session Affinity:  None
+Events:            <none>

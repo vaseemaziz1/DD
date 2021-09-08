@@ -1,0 +1,300 @@
+root@client ~ # cat *
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: os-config
+data:
+  # property-like keys; each key maps to a simple value
+   data_file: |
+     IP=172.31.0.5
+     NAME="CentOS Linux"
+     VERSION="7 (Core)"
+     VERSION_ID="7"
+
+
+  # file-like keys
+#  game.properties: |
+#    enemy.types=aliens,monsters
+#    player.maximum-lives=5    
+#  user-interface.properties: |
+#    color.good=purple
+#    color.bad=yellow
+#    allow.textmode=true 
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: users-cm
+data:
+     cluster-admin: admin
+     devops: devops
+     db-admin: db-admin
+     user1: James Fitzpatrick
+     user2: Sherry Mccoy
+     user3: Vaseemaziz Mohammed
+
+
+  # file-like keys
+#  game.properties: |
+#    enemy.types=aliens,monsters
+#    player.maximum-lives=5    
+#  user-interface.properties: |
+#    color.good=purple
+#    color.bad=yellow
+#    allow.textmode=true 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: user-pod
+  name: user-pod
+spec:
+  containers:
+  - image: busybox
+    name: user-pod
+    env:
+    - name: USER1
+      valueFrom:
+        configMapKeyRef:
+          name: users-cm
+          key: user1
+    - name: USER2
+      valueFrom:
+        configMapKeyRef:
+          name: users-cm
+          key: user2
+    resources: {}
+    command: ["sh", "-c", "sleep 4800"]
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: team-pod
+  name: team-pod
+spec:
+  containers:
+  - image: busybox
+    name: team-pod
+    envFrom:
+    - configMapRef:
+        name: users-cm
+    resources: {}
+    command: ["sh", "-c", "sleep 4800"]
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: team-volume-pod
+  name: team-volume-pod
+spec:
+  containers:
+  - image: busybox
+    name: team-volume-pod
+    volumeMounts:
+    - name: team-volume
+      mountPath: /data/team-members
+    resources: {}
+    command: ["sh", "-c", "sleep 3600"]
+  volumes:
+    - name: team-volume
+      configMap:
+        name: users-cm11111
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+root@client ~ # 
+
+
+$ cat configmap/game.properties
+enemies=aliens
+enemies.cheat.level=noGoodRotten
+lives=3
+
+$ cat configmap/ui.properties
+color.good=purple
+color.bad=yellow
+allow.textmode=true
+
+$ kubectl create configmap game-config --from-file=configmap/
+
+$ kubectl get cm game-config -o yaml
+apiVersion: v1
+data:
+  game.properties: |
+    enemies=aliens
+    enemies.cheat.level=noGoodRotten
+    lives=3
+  ui.properties: |
+    color.good=purple
+    color.bad=yellow
+    allow.textmode=true
+kind: ConfigMap
+metadata:
+  ...
+
+$ kubectl get cm game-config -o jsonpath='{.data.game\.properties}'
+enemies=aliens
+enemies.cheat.level=noGoodRotten
+lives=3
+Creating ConfigMap from Literal:
+$ kubectl create cm palitra --from-literal=RED="#FF0000" --from-literal=GREEN="#00FF00"
+configmap/palitra created
+
+$ kubectl get cm palitra -o yaml
+apiVersion: v1
+data:
+  GREEN: '#00FF00'
+  RED: '#FF0000'
+kind: ConfigMap
+metadata:
+  ...
+
+$ kubectl get cm palitra -o jsonpath='{.data.RED}'
+#FF0000
+Using ConfigMaps in Pods
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-test-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: test-container
+      image: k8s.gcr.io/busybox
+      command: 
+      - "/bin/sh"
+      - "-c"
+      - |
+        env
+        ls -la /etc/config/
+        echo /etc/config/game.properties
+        cat /etc/config/game.properties
+        cat /opt/config/ui.properties
+        cat /opt/config/ui.properties
+      
+      # Define the environment variable
+      env:
+        - name: RED_COLOR
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: palitra
+              # Specify the key associated with the value
+              key: RED
+
+      # Define all of the ConfigMap’s data as container environment variables
+      envFrom:
+      - configMapRef:
+          name: palitra
+
+      # Mounting Volume inside Container
+      volumeMounts:
+      - name: config-volume-all-from-game-config
+        mountPath: /etc/config
+    
+      - name: config-volume-ui-properties
+        mountPath: /opt/config
+
+  # Add ConfigMap data to a Volume, Mounting Volume inside POD
+  volumes:
+    # All data from Config Map
+    - name: config-volume-all-from-game-config
+      configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+        name: game-config
+    
+    # Specific data item form Config Map
+    - name: config-volume-ui-properties
+      configMap:
+        name: game-config
+        items:
+        - key: ui.properties
+          path: ui.properties
+
+
+Creating ConfigMap from Literal:
+$ kubectl create cm palitra --from-literal=RED="#FF0000" --from-literal=GREEN="#00FF00"
+configmap/palitra created
+
+$ kubectl get cm palitra -o yaml
+apiVersion: v1
+data:
+  GREEN: '#00FF00'
+  RED: '#FF0000'
+kind: ConfigMap
+metadata:
+  ...
+
+$ kubectl get cm palitra -o jsonpath='{.data.RED}'
+#FF0000
+Using ConfigMaps in Pods
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-test-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: test-container
+      image: k8s.gcr.io/busybox
+      command: 
+      - "/bin/sh"
+      - "-c"
+      - |
+        env
+        ls -la /etc/config/
+        echo /etc/config/game.properties
+        cat /etc/config/game.properties
+        cat /opt/config/ui.properties
+        cat /opt/config/ui.properties
+      
+      # Define the environment variable
+      env:
+        - name: RED_COLOR
+          valueFrom:
+            configMapKeyRef:
+              # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+              name: palitra
+              # Specify the key associated with the value
+              key: RED
+
+      # Define all of the ConfigMap’s data as container environment variables
+      envFrom:
+      - configMapRef:
+          name: palitra
+
+      # Mounting Volume inside Container
+      volumeMounts:
+      - name: config-volume-all-from-game-config
+        mountPath: /etc/config
+    
+      - name: config-volume-ui-properties
+        mountPath: /opt/config
+
+  # Add ConfigMap data to a Volume, Mounting Volume inside POD
+  volumes:
+    # All data from Config Map
+    - name: config-volume-all-from-game-config
+      configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+        name: game-config
+    
+    # Specific data item form Config Map
+    - name: config-volume-ui-properties
+      configMap:
+        name: game-config
+        items:
+        - key: ui.properties
+          path: ui.properties

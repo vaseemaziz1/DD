@@ -1,0 +1,189 @@
+Daily Dairy
+
+26 July 2021
+
+Full day Induction and On boarding started, presentations by HR . Evening meeting with Manager. Submitted Pre and Post joining Formalities 
+
+27 July 2021
+
+On boarding courses to complete ENGX Bootcamp few Topics, explored apps and requested accesses
+
+28 July 2021
+
+Got Remote desktop on AWS, got to access UPSA, Telescope, started filling skills and past projects, 
+
+finished ENGX Bootcamp
+
+29 July 2021
+
+Filled in most of the skills and past projects in UPSA, updated photo in telescope, went thru onboarding 
+
+Stayed late and Completed 
+Legal and compliance: part 1
+Legal and compliance: part 2
+Professional adaptation: part 1
+Professional adaptation: part 2
+
+30 July 2021
+
+Updated Past projects as suggested by Abeet Bhat and Ramesh Raghupathi
+
+Attended Finance and Payroll Induction
+Attended EPAM Garage Induction
+Attended Meeting with Harish Dara for ERT 
+
+02 Aug 2021
+
+Revised CV (Past Projects) in UPSA, Telescope was not updating 
+Reviewed AWS Networking VPC, Subnets, Routing Tables, NACLs, Security Groups, VPC Peering, Direct Connect, Gateway
+Reviewed Terraform and Cloud Formation
+Attended  Engineering Xcellence meeting by Pandu Kodi
+Set goal to take up LinkedIn certificate for Terraform
+
+03 Aug 2021
+
+Achieved certificate for Learning Terraform (LinkedIn learning)
+Started Advanced Terraform training
+Started AWS CloudFormation training
+
+04 Aug 2021
+
+Achieved LinkedIn Certificate for "Succeeding in DevOps"
+Attended Insurance Helpdesk by Jyothi Kondapi
+Started Kubernetes training for CKA
+Attended EPAM Financial WellBeing by Bharath Kandukuri
+LinkedIn Course completed Docker Essential Training: 1 Installation and Configuration
+
+05 Aug 2021
+Struggled to install Docker Desktop, issues with windows versions, created ticket with support SD9291064
+LinkedIn Course completed Docker Essential Training: 2 Orchestration 
+
+06 Aug 2021
+Docker Desktop created on Mac
+Completed 00 Basic with 15 set of quizzes for course Kubernetes Hands-on Lab
+LinkedIn Course completed Docker Essential Training: 3 Image Creation, Management, and Registry
+
+09 Aug 2021
+Took the Test1 of Kubernetes Hands-on but required too much memorization - did not clear
+Further in depth reading of Kubernetes Tutorials and documentation
+LinkedIn Course completed Docker Essential Training: 4 Storage and Volumes
+LinkedIn Course completed Docker Essential Training: 5 Networking
+NIBR - GEN - DevOps with Java for Containerization Squad - Project interview
+
+10 Aug 2021
+LinkedIn Course completed Docker Essential Training: 6 Security
+Attended Session on - Managing Emotions and Mindfulness Techniques
+Completed 01 Pods with 13 set of quizzes for course Kubernetes Hands-on Lab
+
+11 Aug 2021
+Working on 02 Deployments with 11 set of quizzes for course Kubernetes Hands-on Lab
+Had issues with Kubernetes course, contacted trainer. Going thru Video tutorials recommended by trainer
+Attended Introduction to Red Hat Ansible – hands on. by Shivdutt Bharadwaj
+
+12 Aug 2021
+Completed 02 Deployments, after some deep studying could solve all quizzes in the module for course Kubernetes Hands-on Lab
+LinkedIn Course completed Learning Kubernetes
+LinkedIn Course completed Kubernetes: Native Tools
+
+13 Aug 2021
+Started 03 Services module for course Kubernetes Hands-on Lab
+LinkedIn Course completed Securing Containers and Kubernetes Ecosystem
+LinkedIn Course completed Become a Docker Administrator
+LinkedIn Course completed DevOps Foundations: Containers
+
+
+16 Aug 2021
+Completed 03 Services module with 11 quiz sets for course Kubernetes Hands-on Lab
+(Got stuck for long in 08 Quiz set, got clarification from Siarhei Beliakou and successfully completed)
+LinkedIn Course completed DevOps Foundations
+Started 04 Ingress/Nginx for course Kubernetes Hands-on Lab
+
+17 Aug 2021
+Working on 04 Ingress/Nginx for course Kubernetes Hands-on Lab
+LinkedIn Course completed Learning Jenkins
+LinkedIn Course started DevOps with AWS
+
+18 Aug 2021
+Completed 04 Ingress/Nginx for course Kubernetes Hands-on Lab
+(Some of the toughest exercises are in above lesson, got stuck on several occassions)
+LinkedIn Course completed DevOps with AWS
+
+19 Aug 2021
+Started 05 Storage/EmptyDir for course Kubernetes Hands-on Lab
+Completed 05 Storage/EmptyDir for course Kubernetes Hands-on Lab
+Started 05 Persistent Volumes for course Kubernetes Hands-on Lab
+LinkedIn Course completed Python Quick Start
+
+
+20 Aug 2021
+Completed 05 Persistent Volumes for course Kubernetes Hands-on Lab
+Started 06 Configuration/ConfigMaps for course Kubernetes Hands-on Lab
+
+23 Aug 2021
+Completed 06 Configuration/ConfigMaps for course Kubernetes Hands-on Lab
+Interview for REFI-RMRC with Stanislav Bazalieiev and Volodymyr Tykhenko
+Started 06 Configuration/Secrets for course Kubernetes Hands-on Lab
+
+24 Aug 2021
+Completed 06 Configuration/Secrets for course Kubernetes Hands-on Lab
+Interview with EDSL with Aleksandr Chikovani 
+Started 07 Scheduling for course Kubernetes Hands-on Lab
+Studying Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours] https://www.youtube.com/watch?v=X48VuDVv0do&t=10084s
+
+25 Aug 2021
+Meeting with Siarhei Beliakou for debugging Playpit issues
+Completed 07 Scheduling for course Kubernetes Hands-on Lab
+Started 08 RBAC/User for course Kubernetes Hands-on Lab
+Studying Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours] https://www.youtube.com/watch?v=X48VuDVv0do&t=10084s
+
+26 Aug 2021
+Completed 08 RBAC/User for course Kubernetes Hands-on Lab
+Started 08 RBAC/Service Account for course Kubernetes Hands-on Lab
+Completed 08 RBAC/Service Account for course Kubernetes Hands-on Lab
+
+27 Aug 2021
+Completed Exam 01 for course Kubernetes Hands-on Lab
+Completed Exam 02 for course Kubernetes Hands-on Lab
+
+
+30 Aug 2021
+Completed Exam 03 for course Kubernetes Hands-on Lab
+Attempted Exam 04 but not successful, some silly error held up Quiz #4, need to review ConfigMaps & Secrets
+Requested for extension of deadline for Kubernetes course
+
+31 Aug 2021
+Anastasiia Zubenko , Vasyl Samoilov -- Build Engineer: Technical interview REFI-OSTT SD-Net project
+Jenkins Groovy Tutorial For Beginners | Jenkins Pipeline Tutorial | DevOps Training | Edureka https://www.youtube.com/watch?v=3g1DX_0VXyw
+Kubernetes Storage 101 https://www.youtube.com/watch?v=_qfSzrPn9Cs
+Demo: CI/CD with GitLab https://youtu.be/1iXFbchozdY
+
+
+01 Sep 2021
+GitLab CI/CD Pipeline | GitLab CI/CD Tutorial | Gitlab Tutorial | DevOps Training | Edureka https://www.youtube.com/watch?v=HSV-Kky9N5E
+Jenkins Pipelines with Groovy Script Scripted & Declarative https://www.youtube.com/watch?v=yl3a4jnf0jA
+Jenkins Pipeline Tutorial: Declarative Pipeline vs Scripted Pipeline https://www.youtube.com/watch?v=Ei_Nk14vruE
+Complete Jenkins Pipeline Tutorial | Jenkinsfile explained https://www.youtube.com/watch?v=7KCS70sCoK0&t=1190s
+Introduction to Datadog in 5 Minutes https://www.youtube.com/watch?v=mpuVItJSFMc
+
+02 Sep 2021
+Prepare for client interview for REFI-OSTT SD-Net project, Networking, AWS Networking, Monitoring DataDog, Gitlab CI/CD
+Datadog 101 - 1 - Overview https://www.youtube.com/watch?v=uI3YN_cnahk
+AWS Networking Fundamentals https://www.youtube.com/watch?v=hiKPPy584Mg&t=410s
+AWS Solutions Architect - Networking Services https://www.youtube.com/watch?v=9KUFD3wQuVs
+Networking basics (2020) | What is a switch, router, gateway, https://www.youtube.com/watch?v=_IOZ8_cPgu8
+What is Hub,Bridge,switch and Router-Hindi/Urdu | Best Video on Networking devices https://www.youtube.com/watch?v=eOO7pehMNAE&t=2060s
+
+
+03 Sep 2021
+Invite for interview on 7th for KOHL-DRUP - Jenkins, Terraform, AWS - EKS, RDS, ElastiCache, Elasticsearch, ELB, S3, SecretManager, WAF, API Gateway, Lambda, Config
+Jenkins Minute - Creating Your First Pipeline in Blue Ocean https://www.youtube.com/watch?v=FhDomw6BaHU
+How do I use AWS WAF to block requests with missing or no User-Agent https://www.youtube.com/watch?v=-ft8Ijg6kxE
+AWS WAF - Web Application Firewall: What is and What Does it do? https://www.youtube.com/watch?v=5e4BUKeGZNk&t=15s
+
+06 Sep 2021
+
+
+07 Sep 2021
+KOHL-DRUP - Build Engineer interview with Andrii Shutov - Terraform Output and Data Values, Comm b/w subnets broadcast?, deployment of new image in k8s, Jenkins invocation of Terraform, AWS with secret credentials
+
+08 Sep 2021

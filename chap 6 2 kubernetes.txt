@@ -1,0 +1,179 @@
+root@client ~ # cat *
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: email-pod
+  name: email-pod
+spec:
+  containers:
+  - image: busybox
+    name: email-pod
+    env:
+    - name: EMAIL
+      valueFrom:
+        secretKeyRef:
+          name: devops-secret
+          key: email
+    command: ["sh", "-c", "sleep 4800"]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: dev-pod
+  name: dev-pod
+spec:
+  containers:
+  - image: busybox
+    name: dev-pod
+    envFrom:
+    - secretRef:
+        name: devops-secret
+    command: ["sh", "-c", "sleep 4800"]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: dev-volume-pod
+  name: dev-volume-pod
+spec:
+  containers:
+  - image: busybox
+    name: dev-volume-pod
+    command: ["sh", "-c", "sleep 4800"]
+    volumeMounts:
+    - name: devops-volume
+      mountPath: /data/devops-secret
+    resources: {}
+  volumes:
+  - name: devops-volume
+    secret:
+      secretName: devops-secret
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: devops-secret
+type: Opaque
+data:
+  username: dm1vaGFtbWVk
+  password: dm1vaGFtbWVkX3Bhc3N3b3Jk
+  email: dm1vaGFtbWVkQGxhYi5wbGF5cGl0Lm5ldA==
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-secret
+  items:
+    - key: username_file
+      path: /data/username_file
+    - key: password_file
+      path: /data/password_file
+#type: Opaque
+#data: 
+#  files: |
+#  password_file: /data/password_file 
+#  username_file: /data/username_file 
+
+
+
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+
+Congratulations on completing this lab!
+
+Final Notes
+Working with Secrets
+Encoding/Decoding Data with base64
+$ echo -n 'username' | base64 -w0
+dXNlcm5hbWU=
+
+$ echo 'dXNlcm5hbWU=' | base64 -d
+username
+Here -w0 equals to | tr -d '\n'
+
+Creating Secrets from File(s)
+$ echo -n 'admin' > username
+$ echo -n '1f2d1e2e67df' > password
+
+$ kubectl create secret \
+  generic db-user-pass \
+  --from-file=username \
+  --from-file=password
+
+$ kubectl describe secrets db-user-pass 
+Name:         db-user-pass
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+password:  12 bytes
+username:  5 bytes
+Cretating Secrets from Definition Config
+# file: user-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-secrets
+type: Opaque
+stringData:
+  config.yaml: |-
+    apiUrl: "https://my.api.com/api/v1"
+    username: user
+    password: password
+$ kubectl apply -f user-secrets.yaml
+Decrypting Encoded Data from Resource
+$ kubectl get secrets user-secrets -o jsonpath='{.data.config\.yaml}' | base64 -d
+apiUrl: "https://my.api.com/api/v1"
+username: user
+password: password
+Using Secrets in Pods
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-test-pod
+spec:
+  restartPolicy: Never
+  containers:
+  - name: main
+    image: k8s.gcr.io/busybox
+    command:
+    - /bin/sh
+    - -c
+    - |
+      env
+      ls -la /etc/config
+      cat /etc/config/config.yaml
+    env:
+      - name: SECRET_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: db-user-pass
+            key: username
+    envFrom:
+    - secretRef:
+        name: db-user-pass
+    volumeMounts:
+    - name: user-secrets-volume
+      mountPath: "/etc/config"
+      readOnly: true
+  volumes:
+  - name: user-secrets-volume
+    secret:
+      secretName: user-secrets

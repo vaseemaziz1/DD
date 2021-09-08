@@ -1,0 +1,154 @@
+https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+https://www.adaltas.com/en/2019/08/07/users-rbac-kubernetes/
+https://medium.com/@danielckv/what-is-rbac-in-kubernetes-c54457eff2dc
+https://www.magalix.com/blog/kubernetes-rbac-101
+
+
+
+kubectl create secret docker-registry docker-private-registry \
+ --docker-server=registry.gitlab.com \
+ --docker-username=vmohammed \
+ --docker-password="wd5on2vpPADY5o6X6dMD" \
+ --docker-email=vmohammed@mycompany.com 
+
+kubectl create secret docker-registry my-private-registry \
+ --docker-server=registry.gitlab.com \
+ --docker-username=vmohammed \
+ --docker-password="wd5on2vpPADY5o6X6dMD" \
+ --docker-email=vmohammed@mycompany.com \
+-n fftx-dd-qa
+
+
+
+kubectl patch serviceaccount private-registry \
+  --patch '{
+    "imagePullSecrets": [
+      {
+        "name": "docker-private-registry"
+      }
+    ]
+  }'
+
+kubectl patch serviceaccount default -n fftx-dd-qa \
+  --patch '{
+    "imagePullSecrets": [
+      {
+        "name": "my-private-registry"
+      }
+    ]
+  }'
+
+
+Create “docker credentials” secret:
+
+Name: docker-private-registry
+Docker Server: registry.gitlab.com
+Docker Username: vmohammed
+Docker Password: wd5on2vpPADY5o6X6dMD
+Docker Email: vmohammed@mycompany.com
+Create a ServiceAccount:
+
+Name: private-registry
+imagePullSecrets: docker-private-registry
+Create a pod corporate-app:
+
+Namespace: default
+Image: registry.gitlab.com/playpit-labs/images/blackbox:v3.3
+ServiceAccount: private-registry
+ServiceAccountName: private-registry
+
+
+Useful Commands:
+Checking if RBAC is Enabled / Avaialble API Version:
+
+kubectl api-versions | grep rbac
+rbac.authorization.k8s.io/v1
+rbac.authorization.k8s.io/v1beta1
+Creating resources:
+
+kubectl create sa {SA_NAME} \
+  --namespace={NAMESPACE_NAME}
+
+kubectl create role {ROLE_NAME} \
+  --namespace={NAMESPACE_NAME} \
+  --verb=get,list,watch \
+  --resource=pods,pods/status
+
+kubectl create rolebinding {ROLEBINDING_NAME} \
+  --role={ROLE_NAME} \
+  --serviceaccount={NAMESPACE_NAME}:{SA_NAME} \
+  --namespace={NAMESPACE_NAME}
+Generating resources manifests:
+
+kubectl create sa {SA_NAME} \
+  --namespace={NAMESPACE_NAME} \
+  --dry-run=client \
+  -o yaml
+
+kubectl create role {ROLE_NAME} \
+  --namespace={NAMESPACE_NAME} \
+  --verb=get,list,watch \
+  --resource=pods,pods/status \
+  --dry-run=client \
+  -o yaml
+
+kubectl create rolebinding {ROLEBINDING_NAME} \
+  --role={ROLE_NAME} \
+  --serviceaccount={NAMESPACE_NAME}:{SA_NAME} \
+  --namespace={NAMESPACE_NAME} \
+  --dry-run=client \
+  -o yaml
+Checking permissions:
+
+kubectl auth can-i list pods \
+  --as=system:serviceaccount:{NAMESPACE_NAME}:{SA_NAME}
+
+
+root@client / # cat *.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: kubectl
+  name: kubectl
+spec:
+  containers:
+  - image: bitnami/kubectl:1.20
+    name: kubectl
+    resources: {}
+    command: ["sh", "-c", "sleep infinity"]
+  serviceAccount: vmohammed-sa
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: vmohammed-rolebinding
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: vmohammed-role
+subjects:
+- kind: ServiceAccount
+  name: vmohammed-sa
+  namespace: default
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: vmohammed-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get","list"]
+- apiGroups: ["extensions", "apps"]
+  #
+  # at the HTTP level, the name of the resource for accessing Deployment
+  # objects is "deployments"
+  resources: ["deployments"]
+  verbs: ["get", "list"]
+
+root@client / # 

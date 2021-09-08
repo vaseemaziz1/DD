@@ -1,0 +1,77 @@
+ kubectl create ingress lights-ingress --class=default \
+  --rule="lights.k8slab.playpit.net/=switch:80" \
+  --rule="lights.k8slab.playpit.net/red=red-svc:80" \
+  --rule="lights.k8slab.playpit.net/green=green-svc:80" \
+  --rule="lights.k8slab.playpit.net/yellow=yellow-svc:80"
+  
+  lights.k8slab.playpit.net/ -> switch
+  lights.k8slab.playpit.net/red -> red-svc
+  lights.k8slab.playpit.net/green -> green-svc
+lights.k8slab.playpit.net/yellow -> yellow-svc
+
+lights-ingress
+root@client ~ # cat test.yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tomcat-with-init-emptydir
+spec:
+  initContainers:
+  - image: busybox
+    name: init-contanier-1
+    command: ["sh", "-c", "wget -O /webapps/ROOT/index.jsp https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/tomcat/index.jsp"]
+    volumeMounts:
+    - mountPath: /webapps/ROOT/
+      name: shared-pod-volume
+
+  containers:
+  - image: tomcat:9.0-jre8-alpine
+    name: container-a
+    volumeMounts:
+    - mountPath: /usr/local/tomcat/webapps/ROOT
+      name: shared-pod-volume
+
+  volumes:
+  - name: shared-pod-volume
+    emptyDir: {}
+root@client ~ # :q
+bash: :q: command not found
+root@client ~ # cat t1.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomcat-with-init-emptydir
+  name: tomcat-with-init-emptydir
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat-with-init-emptydir
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomcat-with-init-emptydir
+    spec:
+      initContainers:
+      - image: busybox
+        name: init-contanier-1
+        command: ["sh", "-c", "wget -O /webapps/ROOT/index.jsp https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/tomcat/index.jsp"]
+        volumeMounts:
+        - mountPath: /webapps/ROOT/
+          name: shared-pod-volume
+
+      containers:
+      - image: tomcat:9.0-jre8-alpine
+        name: container-a
+        volumeMounts:
+        - mountPath: /usr/local/tomcat/webapps/ROOT
+          name: shared-pod-volume
+
+      volumes:
+      - name: shared-pod-volume
+        emptyDir: {}
+status: {}

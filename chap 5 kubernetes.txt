@@ -1,0 +1,274 @@
+root@client ~ # cat svc1.yaml t1.yaml test.yaml tst2.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomcat-with-init-emptydir
+  name: tomcat-with-init-emptydir-svc
+spec:
+  ports:
+  - name: 80-8080
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: tomcat-with-init-emptydir
+  type: NodePort
+status:
+  loadBalancer: {}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: tomcat-with-init-emptydir
+  name: tomcat-with-init-emptydir
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat-with-init-emptydir
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tomcat-with-init-emptydir
+    spec:
+      initContainers:
+      - image: busybox
+        name: init-contanier-1
+        command: ["sh", "-c", "wget -O /webapps/ROOT/index.jsp https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/tomcat/index.jsp"]
+        volumeMounts:
+        - mountPath: /webapps/ROOT/
+          name: shared-pod-volume
+
+      containers:
+      - image: tomcat:9.0-jre8-alpine
+        name: container-a
+        volumeMounts:
+        - mountPath: /usr/local/tomcat/webapps/ROOT
+          name: shared-pod-volume
+
+      volumes:
+      - name: shared-pod-volume
+        emptyDir: {}
+status: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tomcat-with-init-emptydir
+spec:
+  initContainers:
+  - image: busybox
+    name: init-contanier-1
+    command: ["sh", "-c", "wget -O /webapps/ROOT/index.jsp https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/tomcat/index.jsp"]
+    volumeMounts:
+    - mountPath: /webapps/ROOT/
+      name: shared-pod-volume
+
+  containers:
+  - image: tomcat:9.0-jre8-alpine
+    name: container-a
+    volumeMounts:
+    - mountPath: /usr/local/tomcat/webapps/ROOT
+      name: shared-pod-volume
+
+  volumes:
+  - name: shared-pod-volume
+    emptyDir: {}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-tricky-pod-emptydir
+spec:
+  initContainers:
+  - image: busybox
+    name: init-contanier-1
+    command: ["sh", "-c", "ls -l"]
+    volumeMounts:
+    - mountPath: /webapps/ROOT/
+      name: shared-pod-volume
+
+  containers:
+  - image: nginx:1.17-alpine
+    name: web-tricky-pod-emptydir
+    volumeMounts:
+    - mountPath: /usr/local/tomcat/webapps/ROOT
+      name: shared-pod-volume
+
+  volumes:
+  - name: shared-pod-volume
+    emptyDir: {}
+    
+    
+    
+   
+   root@client ~ # cat t*.yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: web-tricky-pod-emptydir
+     labels:
+       app: web-tricky-pod-emptydir
+   spec:
+     initContainers:
+     - image: busybox
+       name: init-contanier-1
+       command: ["sh", "-c", "echo 'Student: Vaseemaziz Mohammed  \n
+   web-tricky-pod-emptydir' `hostname -i`  > /tmp/index.html "]
+       volumeMounts:
+       - mountPath: /tmp/
+         name: shared-pod-volume
+   
+     containers:
+     - image: nginx:1.17-alpine
+       name: web-tricky-pod-emptydir
+       volumeMounts:
+       - mountPath: /usr/share/nginx/html/
+         name: shared-pod-volume
+   
+     volumes:
+     - name: shared-pod-volume
+       emptyDir: {}
+   
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: web-deployment-hostpath
+     labels:
+       app: web-deployment-hostpath
+   spec:
+     nodeName: node01
+     containers:
+     - image: nginx:1.17-alpine
+       name: web-deployment-hostpath
+       volumeMounts:
+       - mountPath: /usr/share/nginx/html/
+         name: shared-pod-volume
+   
+     volumes:
+     - name: shared-pod-volume
+       hostPath: 
+         path: /host-data
+   
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     creationTimestamp: null
+     labels:
+       app: web-deployment-hostpath
+     name: web-deployment-hostpath
+   spec:
+     replicas: 1
+     selector:
+       matchLabels:
+         app: web-deployment-hostpath
+     strategy: {}
+     template:
+       metadata:
+         creationTimestamp: null
+         labels:
+           app: web-deployment-hostpath
+       spec:
+         nodeName: node01
+         containers:
+         - image: nginx:1.17-alpine
+           name: web-deployment-hostpath
+           volumeMounts:
+           - mountPath: /usr/share/nginx/html/
+             name: shared-pod-volume
+   
+         volumes:
+         - name: shared-pod-volume
+           hostPath: 
+             path: /host-data
+   
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: web-pod-emptydir-tmpfs
+     labels:
+       app: web-pod-emptydir-tmpfs
+   spec:
+     initContainers:
+     - image: busybox
+       name: init-contanier-1
+       command: ["sh", "-c", "echo 'initialized by initContainer, using tmpfs' > /html/index.html"]
+       volumeMounts:
+       - mountPath: /html
+         name: shared-pod-volume
+   
+     containers:
+     - image: nginx:1.17-alpine
+       name: web-pod-emptydir-tmpfs
+       volumeMounts:
+       - mountPath: /usr/share/nginx/html/
+         name: shared-pod-volume
+   
+     volumes:
+     - name: shared-pod-volume
+       emptyDir:
+       medium: Memory
+       
+       
+       
+       
+       apiVersion: v1
+       kind: Service
+       metadata:
+         creationTimestamp: null
+         labels:
+           app: web-deployment-hostpath 
+         name: web-deployment-hostpath-svc
+       spec:
+         ports:
+         - name: http
+           port: 80
+           protocol: TCP
+           nodePort: 30083
+           targetPort: 80
+         selector:
+           app: web-deployment-hostpath
+         type: NodePort
+       status:
+         loadBalancer: {}
+       apiVersion: v1
+       kind: Service
+       metadata:
+         creationTimestamp: null
+         labels:
+           app: web-pod-emptydir-tmpfs 
+         name: web-pod-emptydir-tmpfs-svc
+       spec:
+         ports:
+         - name: http
+           port: 80
+           protocol: TCP
+           nodePort: 30082
+           targetPort: 80
+         selector:
+           app: web-pod-emptydir-tmpfs
+         type: NodePort
+       status:
+         loadBalancer: {}
+       apiVersion: v1
+       kind: Service
+       metadata:
+         creationTimestamp: null
+         labels:
+           app: web-tricky-pod-emptydir 
+         name: web-tricky-pod-emptydir-svc
+       spec:
+         ports:
+         - name: http
+           port: 80
+           protocol: TCP
+           nodePort: 30081
+           targetPort: 80
+         selector:
+           app: web-tricky-pod-emptydir
+         type: NodePort
+       status:
+  loadBalancer: {}
