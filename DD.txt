@@ -1,4 +1,4 @@
-Daily Dairy
+Daily Diary
 
 26 July 2021
 
@@ -181,10 +181,30 @@ How do I use AWS WAF to block requests with missing or no User-Agent https://www
 AWS WAF - Web Application Firewall: What is and What Does it do? https://www.youtube.com/watch?v=5e4BUKeGZNk&t=15s
 
 06 Sep 2021
+What is Helm? https://www.youtube.com/watch?v=fy8SHvNZGeE
+AWS EKS - Create Kubernetes cluster on Amazon EKS | the easy way https://www.youtube.com/watch?v=p6xDCz00TxU
+Containers on AWS Overview: ECS | EKS | Fargate | ECR  https://www.youtube.com/watch?v=AYAh6YDXuho
+AWS Elastic Cache Redis and Mem cached Demo https://www.youtube.com/watch?v=BuCHMUE8vrI
 
 
 07 Sep 2021
 KOHL-DRUP - Build Engineer interview with Andrii Shutov - Terraform Output and Data Values, Comm b/w subnets broadcast?, deployment of new image in k8s, Jenkins invocation of Terraform, AWS with secret credentials
-
+Kibana Dashboard with AWS ElasticSearch and CloudWatch https://www.youtube.com/watch?v=06nJRWOz5uc&t=180s
+AWS Elasticsearch Explained with Demo https://www.youtube.com/watch?v=KXrupsR9aHo
+Elasticsearch Tutorial | Getting Started with Elasticsearch | ELK  https://www.youtube.com/watch?v=1EnvkPf7t6Y
+How to deploy php web site from AWS | PHP setup from AWS https://www.youtube.com/watch?v=fRySKpscudg
+HOWTO - Deploy a PHP Application on Heroku https://www.youtube.com/watch?v=rn5XBBd-_J8&t=260s
+How To Deploy A Simple HTML/CSS/Javascript https://www.youtube.com/watch?v=846rtKUo0kM
+Deploy a static website(HTML,CSS & Javascript) https://www.youtube.com/watch?v=i3jkwcTC9F4&t=193s
+When and when not to use Node.js - Node.js Basics [06] - https://www.youtube.com/watch?v=UCd6LorxpkY&t=834s
 
 08 Sep 2021
+AWS Lambda with API Gateway and CloudWatch Example | https://www.youtube.com/watch?v=pjBa4AxWfCQ
+What is an API Gateway? | WHAT IS API? | Complete Guide | https://www.youtube.com/watch?v=NKKzMEmashw&t=112s
+AWS WAF Introduction | What is AWS Web Application Firewall https://www.youtube.com/watch?v=W4hg--UYpq0&t=419s
+AWS Config - Rules, Resources & Timelines with DEMO | https://www.youtube.com/watch?v=BoHJVGzq-58
+AWS Config Tutorial https://www.youtube.com/watch?v=qHdFoYSrUvk&t=355s
+Terraform : AWS - How to build reusable terraform modules with example https://www.youtube.com/watch?v=dMzY3GiJPiY&t=1274s
+Terraform Modules | How to Build reusable Terraform Modules with Example | DevOps Training | Edureka https://www.youtube.com/watch?v=9afP2Js5ljI&t=500s
+Getting Started with EKS and Terraform https://www.youtube.com/watch?v=Qy2A_yJH5-o&t=361s
+
