@@ -186,4 +186,5 @@ AWS WAF - Web Application Firewall: What is and What Does it do? https://www.you
 07 Sep 2021
 KOHL-DRUP - Build Engineer interview with Andrii Shutov - Terraform Output and Data Values, Comm b/w subnets broadcast?, deployment of new image in k8s, Jenkins invocation of Terraform, AWS with secret credentials
 
+
 08 Sep 2021
