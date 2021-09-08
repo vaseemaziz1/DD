@@ -207,4 +207,4 @@ AWS Config Tutorial https://www.youtube.com/watch?v=qHdFoYSrUvk&t=355s
 Terraform : AWS - How to build reusable terraform modules with example https://www.youtube.com/watch?v=dMzY3GiJPiY&t=1274s
 Terraform Modules | How to Build reusable Terraform Modules with Example | DevOps Training | Edureka https://www.youtube.com/watch?v=9afP2Js5ljI&t=500s
 Getting Started with EKS and Terraform https://www.youtube.com/watch?v=Qy2A_yJH5-o&t=361s
-
+Started Oreilly Kubernetes course https://learning.oreilly.com/videos/certified-kubernetes-administrator/
