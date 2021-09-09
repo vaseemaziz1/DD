@@ -121,8 +121,8 @@ kind: ConfigMap
 metadata:
   name: check-db-configmap
 data:
-     PORT: 80
-     STUDENT: Vaseemaziz Mohammed
+     PORT: "80"
+     STUDENT: "Vaseemaziz Mohammed"
 
 
 
