@@ -217,6 +217,7 @@ Jenkins Pipeline Tutorial: Declarative Pipeline vs Scripted  https://www.youtube
 
 
 13 Sep 2021
+Completed Course - Kubernetes Hands On - Finished Exam 04 (last)
 What is Dockerfile | How to create and build Dockerfile | Dockerfile https://www.youtube.com/watch?v=LQjaJINkQXY
 AWS IAM Zero to Hero || AWS IAM Full Course || AWS IAM https://www.youtube.com/watch?v=w34M3-c5AcQ&t=56s
 AWS IAM Tutorial | AWS Identity And Access Management | AWS https://www.youtube.com/watch?v=GjVFf83dcE8&t=842s
