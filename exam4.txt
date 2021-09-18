@@ -1,5 +1,5 @@
 1. 
-
+echo "
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -10,7 +10,7 @@ spec:
   resources:
     requests:
       storage: 2Gi
-
+" > task1.yaml
 
 
 2. Creating Secrets for MySQL DB
@@ -25,6 +25,8 @@ MYSQL_USER: vmohammed
 MYSQL_PASSWORD: pAssw0rd
 
 kubectl create secret generic mysql-secret --type=Opaque --from-literal=MYSQL_RANDOM_ROOT_PASSWORD=yes --from-literal=MYSQL_DATABASE=production --from-literal=MYSQL_USER=vmohammed  --from-literal=MYSQL_PASSWORD=pAssw0rd --dry-run=true -o yaml
+
+kubectl create secret generic mysql-secret --type=Opaque --from-literal=MYSQL_RANDOM_ROOT_PASSWORD=yes --from-literal=MYSQL_DATABASE=production --from-literal=MYSQL_USER=vmohammed  --from-literal=MYSQL_PASSWORD=pAssw0rd
 
 
 3. Deploying MySQL DB
@@ -44,7 +46,7 @@ Wait until MySQL DB starts. Inspect its Pod Logs
 
 
 root@client ~ # cat mysqldb.yaml 
-apiVersion: apps/v1
+echo "apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -72,7 +74,22 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-            claimName: mysql-data-claim
+            claimName: mysql-data-claim" > task3.yaml
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data"
+
 
 4. MySQL DB Service
 Now please create db related Service:
@@ -85,7 +102,7 @@ Overview:
 
 
 root@client ~ # kubectl create service clusterip db --tcp=3306 --dry-run=client -o yaml
-apiVersion: v1
+echo "apiVersion: v1
 kind: Service
 metadata:
   creationTimestamp: null
@@ -94,7 +111,7 @@ metadata:
   name: db
 spec:
   ports:
-  - name: "3306"
+  - name: '3306'
     port: 3306
     protocol: TCP
     targetPort: 3306
@@ -102,7 +119,7 @@ spec:
     app: mysql-db
   type: ClusterIP
 status:
-  loadBalancer: {}
+  loadBalancer: {} " > task4.yaml
 root@client ~ # 
 
 5. Creating Configuration Map
@@ -116,14 +133,14 @@ STUDENT: Vaseemaziz Mohammed
 Overview:
 
 
-apiVersion: v1
+echo 'apiVersion: v1
 kind: ConfigMap
 metadata:
   name: check-db-configmap
 data:
      PORT: "80"
      STUDENT: "Vaseemaziz Mohammed"
-
+' > task5.yaml
 
 
 6. Deploying DB Check Application
@@ -171,7 +188,8 @@ Please create check-db-ingress Ingress for handling check-db-service outside the
 
 Overview:
 
-
+ kubectl create ingress check-db-ingress --class=default \
+  --rule="check-db.student.playpit.net/*=check-db-service:30080"
 
 
   

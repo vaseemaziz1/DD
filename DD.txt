@@ -208,3 +208,45 @@ Terraform : AWS - How to build reusable terraform modules with example https://w
 Terraform Modules | How to Build reusable Terraform Modules with Example | DevOps Training | Edureka https://www.youtube.com/watch?v=9afP2Js5ljI&t=500s
 Getting Started with EKS and Terraform https://www.youtube.com/watch?v=Qy2A_yJH5-o&t=361s
 Started Oreilly Kubernetes course https://learning.oreilly.com/videos/certified-kubernetes-administrator/
+
+09 Sep 2021
+Ansible vs. Terraform: What's the difference?  https://www.youtube.com/watch?v=rx4Uh3jv1cA
+Terraform explained in 15 mins | Terraform Tutorial for Beginners  https://www.youtube.com/watch?v=l5k1ai_GBDE
+Ansible Roles Explained | Understanding Ansible Roles | https://www.youtube.com/watch?v=Or6k2UcKeN4&t=364s
+Jenkins Pipeline Tutorial: Declarative Pipeline vs Scripted  https://www.youtube.com/watch?v=Ei_Nk14vruE
+
+
+13 Sep 2021
+What is Dockerfile | How to create and build Dockerfile | Dockerfile https://www.youtube.com/watch?v=LQjaJINkQXY
+AWS IAM Zero to Hero || AWS IAM Full Course || AWS IAM https://www.youtube.com/watch?v=w34M3-c5AcQ&t=56s
+AWS IAM Tutorial | AWS Identity And Access Management | AWS https://www.youtube.com/watch?v=GjVFf83dcE8&t=842s
+Onboarding - Code of Ethical Conduct 2021 completed!
+Onboarding - Security Development Lifecycle Completed
+Onboarding - Ethics and Compliance Program
+
+
+14 Sep 2021
+Kubernetes: Package Management with Helm  (LinkedIn)
+Configure Build Tools in Jenkins and Jenkinsfile | Jenkins Tutorial https://www.youtube.com/watch?v=L9Ite-1pEU8
+Docker Tutorial for Beginners [FULL COURSE in 3 Hours] https://www.youtube.com/watch?v=3c-iBn73dDE&t=2s
+Complete Jenkins Pipeline Tutorial | Jenkinsfile explained  https://www.youtube.com/watch?v=7KCS70sCoK0&t=5s
+How Prometheus Monitoring works | Prometheus Architecture https://www.youtube.com/watch?v=h4Sl21AKiDg&t=1060s
+
+15 Sep 2021
+Top 50+ AWS Services Explained  https://www.youtube.com/watch?v=JIbIYCM48to
+Introduction to AWS Services  https://www.youtube.com/watch?v=Z3SYDTMP3ME
+Most important AWS Services for Interviews! https://www.youtube.com/watch?v=eFWJH1KfdKI
+AWS Cloudtrail vs Cloudwatch in 15 minutes | AWS tutorial for https://www.youtube.com/watch?v=SRCS820Tr8c
+AWS Interview Question| DevOps Interview Question|CloudWatch https://www.youtube.com/watch?v=gXClYJ9qt0s
+
+16 Sep 2021
+Ansible best practices for startups to enterprises https://www.youtube.com/watch?v=5BhAJ4mEfZ8&t=1763s
+Ansible Plugins  https://www.youtube.com/watch?v=klTWFyFcRng&t=1074s
+Create Your Own Ansible Module Today | Knowledge Sharing | techbeatly https://www.youtube.com/watch?v=aUdneFlkMJk&t=727s
+Practical Ansible Solutions: Modules and Plugins|packtpub.com https://www.youtube.com/watch?v=yeHAxkNGA2Q
+Writing Ansible Modules https://www.youtube.com/watch?v=WawwizdkCow&t=6s
+
+17 Sep 2021
+Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours] https://www.youtube.com/watch?v=X48VuDVv0do&t=7029s
+AWS: Networking  (Linked In)
+Client Interview : EPAM DevOps engineer interview Sergei Sokolov2, Henry, Kenneth (ELS-HBE)
