@@ -249,5 +249,11 @@ Writing Ansible Modules https://www.youtube.com/watch?v=WawwizdkCow&t=6s
 
 17 Sep 2021
 Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours] https://www.youtube.com/watch?v=X48VuDVv0do&t=7029s
-AWS: Networking  (Linked In)
+Training on AWS: Networking  (Linked In)
 Client Interview : EPAM DevOps engineer interview Sergei Sokolov2, Henry, Kenneth (ELS-HBE)
+
+20 Sep 2021
+RHCE Managing Systems with Ansible (LinkedIn)
+Training completed AWS: Networking (Linked In)
+How to Train Your Brain for Maximum Growth (LinkedIn)
+Training on :  Deploying to AWS with Terraform and Ansible (LinuxAcademy)
