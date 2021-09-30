@@ -257,3 +257,42 @@ RHCE Managing Systems with Ansible (LinkedIn)
 Training completed AWS: Networking (Linked In)
 How to Train Your Brain for Maximum Growth (LinkedIn)
 Training on :  Deploying to AWS with Terraform and Ansible (LinuxAcademy)
+
+21 Sep 2021
+Meditations to Change Your Brain (LinkedIn)
+Git MERGE vs REBASE https://www.youtube.com/watch?v=CRlGDDprdOQ
+Introduction to Git - Core Concepts https://www.youtube.com/watch?v=uR6G2v_WsRA
+Training on :  Deploying to AWS with Terraform and Ansible (LinuxAcademy)
+
+22 Sep 2021
+Meditations to Change Your Brain (LinkedIn)
+How Prometheus Monitoring works | Prometheus Architecture explained https://www.youtube.com/watch?v=h4Sl21AKiDg&t=308s
+Setup Prometheus Monitoring on Kubernetes using Helm and Prometheus Operator | Part 1 https://www.youtube.com/watch?v=QoDqxm7ybLc
+
+23 Sep 2021
+Studying AWS DevOps: Continuous Docker Deployment to AWS Fargate from GitLab (LinkedIn)
+Training on :  Deploying to AWS with Terraform and Ansible (LinuxAcademy)
+
+
+
+24 Sep 2021
+Studying AWS DevOps: Continuous Docker Deployment to AWS Fargate from GitLab (LinkedIn)
+Training on :  Deploying to AWS with Terraform and Ansible (LinuxAcademy)
+
+
+27 Sep 2021
+Completed : AWS DevOps: Continuous Docker Deployment to AWS Fargate from GitLab (LinkedIn)
+Kubernetes from zero to hero https://youtu.be/X48VuDVv0do
+
+28 Sep 2021
+Interview : EPAM Project Interview  Volha Zaitsava and Vitaly
+Interview : Let's discuss past experience. Tools and Technology.  Albert Mkhitaryan & Kunal Jha
+
+
+29 Sep 2021
+Terraform explained in 15 mins https://www.youtube.com/watch?v=l5k1ai_GBDE
+Meeting: [Kick-off] CloudX Associate: AWS DevOps 
+
+
+30 Sep 2021
+Completed : HashiCorp Certified Terraform Associate (LinuxAcademy)
